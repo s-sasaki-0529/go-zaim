@@ -1,8 +1,9 @@
 package main
+
 import (
 	"fmt"
-	"os"
 	. "github.com/Sa2Knight/go-zaim"
+	"os"
 )
 
 func main() {

@@ -2,9 +2,9 @@ package gozaim
 
 import (
 	"fmt"
-	"net/http"
-	"io/ioutil"
 	"github.com/dghubble/oauth1"
+	"io/ioutil"
+	"net/http"
 )
 
 const END_POINT = "https://api.zaim.net/v2/home/user/verify"
@@ -16,7 +16,7 @@ type Client struct {
 func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	oauthConfig := oauth1.NewConfig(consumerKey, consumerSecret)
 	oauthToken := oauth1.NewToken(token, tokenSecret)
-    httpClient := oauthConfig.Client(oauth1.NoContext, oauthToken)
+	httpClient := oauthConfig.Client(oauth1.NoContext, oauthToken)
 
 	resp, err := httpClient.Get(END_POINT)
 	if err != nil {
