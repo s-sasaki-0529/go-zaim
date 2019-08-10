@@ -1,13 +1,12 @@
 package gozaim
 
 import (
-	"fmt"
 	"github.com/dghubble/oauth1"
-	"io/ioutil"
+	// "io/ioutil"
 	"net/http"
 )
 
-const END_POINT = "https://api.zaim.net/v2/home/user/verify"
+const END_POINT = "https://api.zaim.net/v2/"
 
 type Client struct {
 	HttpClient *http.Client
@@ -18,14 +17,15 @@ func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	oauthToken := oauth1.NewToken(token, tokenSecret)
 	httpClient := oauthConfig.Client(oauth1.NoContext, oauthToken)
 
-	resp, err := httpClient.Get(END_POINT)
-	if err != nil {
-		panic("failed to create client.")
-	}
-
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Printf("Raw Response Body:\n%v\n", string(body))
-
 	return &Client{HttpClient: httpClient}
+}
+
+func (c *Client) executeHttpRequest(method, path string) (*http.Response, error) {
+	resp, err := c.HttpClient.Get(END_POINT + path)
+
+	if err != nil {
+		return nil, err
+	} else {
+		return resp, nil
+	}
 }
