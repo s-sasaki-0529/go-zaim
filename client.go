@@ -34,7 +34,7 @@ func (c *Client) Get(path string, params map[string]string) (string, error) {
 }
 
 func (c *Client) executeHttpRequest(method, path string, params map[string]string) (*http.Response, error) {
-	request, err := http.NewRequest(method, END_POINT + path + mapToQueryString(params), nil)
+	request, err := http.NewRequest(method, END_POINT+path+mapToQueryString(params), nil)
 	if err != nil {
 		return nil, err
 	}
