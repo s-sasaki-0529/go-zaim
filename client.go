@@ -2,8 +2,9 @@ package gozaim
 
 import (
 	"github.com/dghubble/oauth1"
-	// "io/ioutil"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 const END_POINT = "https://api.zaim.net/v2/"
@@ -20,12 +21,44 @@ func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	return &Client{HttpClient: httpClient}
 }
 
-func (c *Client) executeHttpRequest(method, path string) (*http.Response, error) {
-	resp, err := c.HttpClient.Get(END_POINT + path)
+func (c *Client) Get(path string, params map[string]string) (string, error) {
+	response, err := c.executeHttpRequest("GET", path, params)
+	if err != nil {
+		return "", err
+	}
+	body, err := parseHttpResponseBody(response)
+	if err != nil {
+		return "", err
+	}
+	return body, nil
+}
 
+func (c *Client) executeHttpRequest(method, path string, params map[string]string) (*http.Response, error) {
+	request, err := http.NewRequest(method, END_POINT + path + mapToQueryString(params), nil)
 	if err != nil {
 		return nil, err
-	} else {
-		return resp, nil
 	}
+	return c.HttpClient.Do(request)
+}
+
+func parseHttpResponseBody(resp *http.Response) (string, error) {
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	} else {
+		return string(body), nil
+	}
+}
+
+func mapToQueryString(m map[string]string) string {
+	if len(m) == 0 {
+		return ""
+	}
+	queries := []string{}
+	for k, v := range m {
+		query := k + "=" + v
+		queries = append(queries, query)
+	}
+	return "?" + strings.Join(queries, "&")
 }
