@@ -21,14 +21,14 @@ func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	return &Client{HttpClient: httpClient}
 }
 
-func (c *Client) Get(path string, params map[string]string) (string, error) {
+func (c *Client) get(path string, params map[string]string) ([]byte, error) {
 	response, err := c.executeHttpRequest("GET", path, params)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	body, err := parseHttpResponseBody(response)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return body, nil
 }
@@ -41,13 +41,13 @@ func (c *Client) executeHttpRequest(method, path string, params map[string]strin
 	return c.HttpClient.Do(request)
 }
 
-func parseHttpResponseBody(resp *http.Response) (string, error) {
+func parseHttpResponseBody(resp *http.Response) ([]byte, error) {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	} else {
-		return string(body), nil
+		return body, nil
 	}
 }
 
