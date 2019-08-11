@@ -60,5 +60,6 @@ func mapToQueryString(m map[string]string) string {
 		query := k + "=" + v
 		queries = append(queries, query)
 	}
+
 	return "?" + strings.Join(queries, "&")
 }
