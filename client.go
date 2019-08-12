@@ -2,6 +2,7 @@ package gozaim
 
 import (
 	"bytes"
+	"errors"
 	"github.com/dghubble/oauth1"
 	"io/ioutil"
 	"net/http"
@@ -26,7 +27,7 @@ func (c *Client) get(path string, params url.Values) ([]byte, error) {
 	return c.executeHttpRequestAndParseBody("GET", path, params)
 }
 
-func (c *Client) Post(path string, params url.Values) ([]byte, error) {
+func (c *Client) post(path string, params url.Values) ([]byte, error) {
 	return c.executeHttpRequestAndParseBody("POST", path, params)
 }
 
@@ -38,6 +39,9 @@ func (c *Client) executeHttpRequestAndParseBody(method, path string, params url.
 	body, err := parseHttpResponseBody(response)
 	if err != nil {
 		return nil, err
+	}
+	if response.StatusCode != 200 {
+		return nil, errors.New(string(body))
 	}
 	return body, nil
 }
