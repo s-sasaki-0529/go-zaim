@@ -45,3 +45,18 @@ func (c *Client) FetchCategories() ([]Category, error) {
 
 	return raw.Categories, nil
 }
+
+func (c *Client) FetchGenres() ([]Genre, error) {
+	body, err := c.get("home/genre", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Genres []Genre
+		Requested int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Genres, nil
+}
