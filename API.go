@@ -53,10 +53,25 @@ func (c *Client) FetchGenres() ([]Genre, error) {
 	}
 
 	var raw struct {
-		Genres []Genre
+		Genres    []Genre
 		Requested int
 	}
 	json.Unmarshal(body, &raw)
 
 	return raw.Genres, nil
+}
+
+func (c *Client) FetchAccounts() ([]Account, error) {
+	body, err := c.get("home/account", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Accounts  []Account
+		Requested int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Accounts, nil
 }

@@ -52,5 +52,15 @@ type Genre struct {
 	Active        int
 	CategoryId    int
 	ParentGenreId int
-	Modified      int
+	Modified      string
+}
+
+type Account struct {
+	ID              int
+	Name            string
+	Mode            string
+	Sort            int
+	ParentAccountId int
+	Active          int
+	Modified        string
 }
