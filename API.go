@@ -1,6 +1,9 @@
 package gozaim
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"net/url"
+)
 
 func (c *Client) FetchMe() (Me, error) {
 	body, err := c.get("home/user/verify", nil)
@@ -17,7 +20,7 @@ func (c *Client) FetchMe() (Me, error) {
 	return raw.Me, nil
 }
 
-func (c *Client) FetchMoney(params map[string]string) ([]Money, error) {
+func (c *Client) FetchMoney(params url.Values) ([]Money, error) {
 	body, err := c.get("home/money", params)
 	if err != nil {
 		return nil, err

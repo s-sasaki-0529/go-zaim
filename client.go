@@ -4,7 +4,7 @@ import (
 	"github.com/dghubble/oauth1"
 	"io/ioutil"
 	"net/http"
-	"strings"
+	"net/url"
 )
 
 const END_POINT = "https://api.zaim.net/v2/"
@@ -21,7 +21,7 @@ func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	return &Client{HttpClient: httpClient}
 }
 
-func (c *Client) get(path string, params map[string]string) ([]byte, error) {
+func (c *Client) get(path string, params url.Values) ([]byte, error) {
 	response, err := c.executeHttpRequest("GET", path, params)
 	if err != nil {
 		return nil, err
@@ -33,20 +33,20 @@ func (c *Client) get(path string, params map[string]string) ([]byte, error) {
 	return body, nil
 }
 
-func (c *Client) executeHttpRequest(method, path string, params map[string]string) (*http.Response, error) {
+func (c *Client) executeHttpRequest(method, path string, params url.Values) (*http.Response, error) {
 	var request *http.Request
 	var err error
 
 	if method == "GET" {
 		request, err = http.NewRequest(
 			method,
-			END_POINT+path+mapToQueryString(params),
+			END_POINT+path+"?"+params.Encode(),
 			nil,
 		)
 	} else {
 		request, err = http.NewRequest(
 			method,
-			END_POINT+path+mapToQueryString(params),
+			END_POINT+path+"?"+params.Encode(),
 			nil,
 		)
 		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -65,17 +65,4 @@ func parseHttpResponseBody(resp *http.Response) ([]byte, error) {
 	} else {
 		return body, nil
 	}
-}
-
-func mapToQueryString(m map[string]string) string {
-	if len(m) == 0 {
-		return ""
-	}
-	queries := []string{}
-	for k, v := range m {
-		query := k + "=" + v
-		queries = append(queries, query)
-	}
-
-	return "?" + strings.Join(queries, "&")
 }
