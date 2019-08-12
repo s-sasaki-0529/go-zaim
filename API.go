@@ -128,8 +128,8 @@ func (c *Client) FetchCurrencies() ([]Currency, error) {
 	}
 
 	var raw struct {
-		Currencies  []Currency
-		Requested int
+		Currencies []Currency
+		Requested  int
 	}
 	json.Unmarshal(body, &raw)
 

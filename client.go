@@ -34,7 +34,23 @@ func (c *Client) get(path string, params map[string]string) ([]byte, error) {
 }
 
 func (c *Client) executeHttpRequest(method, path string, params map[string]string) (*http.Response, error) {
-	request, err := http.NewRequest(method, END_POINT+path+mapToQueryString(params), nil)
+	var request *http.Request
+	var err error
+
+	if method == "GET" {
+		request, err = http.NewRequest(
+			method,
+			END_POINT+path+mapToQueryString(params),
+			nil,
+		)
+	} else {
+		request, err = http.NewRequest(
+			method,
+			END_POINT+path+mapToQueryString(params),
+			nil,
+		)
+		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
 	if err != nil {
 		return nil, err
 	}
