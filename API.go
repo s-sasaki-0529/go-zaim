@@ -154,3 +154,19 @@ func (c *Client) CreateIncome(params url.Values) (bool, error) {
 	}
 	return true, nil
 }
+
+func (c *Client) UpdatePayment(id string, params url.Values) (bool, error) {
+	res, err := c.put("home/money/payment/"+id, params)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (c *Client) UpdateIncome(id string, params url.Values) (bool, error) {
+	res, err := c.put("home/money/income/"+id, params)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
