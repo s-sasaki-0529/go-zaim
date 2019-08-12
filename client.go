@@ -1,6 +1,7 @@
 package gozaim
 
 import (
+	"bytes"
 	"github.com/dghubble/oauth1"
 	"io/ioutil"
 	"net/http"
@@ -22,7 +23,15 @@ func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 }
 
 func (c *Client) get(path string, params url.Values) ([]byte, error) {
-	response, err := c.executeHttpRequest("GET", path, params)
+	return c.executeHttpRequestAndParseBody("GET", path, params)
+}
+
+func (c *Client) Post(path string, params url.Values) ([]byte, error) {
+	return c.executeHttpRequestAndParseBody("POST", path, params)
+}
+
+func (c *Client) executeHttpRequestAndParseBody(method, path string, params url.Values) ([]byte, error) {
+	response, err := c.executeHttpRequest(method, path, params)
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +55,8 @@ func (c *Client) executeHttpRequest(method, path string, params url.Values) (*ht
 	} else {
 		request, err = http.NewRequest(
 			method,
-			END_POINT+path+"?"+params.Encode(),
-			nil,
+			END_POINT+path,
+			bytes.NewBufferString(params.Encode()),
 		)
 		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	}
