@@ -35,6 +35,10 @@ func (c *Client) put(path string, params url.Values) ([]byte, error) {
 	return c.executeHttpRequestAndParseBody("PUT", path, params)
 }
 
+func (c *Client) delete(path string, params url.Values) ([]byte, error) {
+	return c.executeHttpRequestAndParseBody("delete", path, params)
+}
+
 func (c *Client) executeHttpRequestAndParseBody(method, path string, params url.Values) ([]byte, error) {
 	response, err := c.executeHttpRequest(method, path, params)
 	if err != nil {

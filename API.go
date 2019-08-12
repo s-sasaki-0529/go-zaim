@@ -156,7 +156,7 @@ func (c *Client) CreateIncome(params url.Values) (bool, error) {
 }
 
 func (c *Client) UpdatePayment(id string, params url.Values) (bool, error) {
-	res, err := c.put("home/money/payment/"+id, params)
+	_, err := c.put("home/money/payment/"+id, params)
 	if err != nil {
 		return false, err
 	}
@@ -164,7 +164,23 @@ func (c *Client) UpdatePayment(id string, params url.Values) (bool, error) {
 }
 
 func (c *Client) UpdateIncome(id string, params url.Values) (bool, error) {
-	res, err := c.put("home/money/income/"+id, params)
+	_, err := c.put("home/money/income/"+id, params)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (c *Client) DeletePayment(id string) (bool, error) {
+	_, err := c.put("home/money/payment/"+id, nil)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (c *Client) DeleteIncome(id string) (bool, error) {
+	_, err := c.put("home/money/income/"+id, nil)
 	if err != nil {
 		return false, err
 	}
