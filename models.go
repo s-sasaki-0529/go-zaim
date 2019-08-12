@@ -64,3 +64,10 @@ type Account struct {
 	Active          int
 	Modified        string
 }
+
+type Currency struct {
+	CurrencyCode string
+	Unit         string
+	Name         string
+	Point        int
+}

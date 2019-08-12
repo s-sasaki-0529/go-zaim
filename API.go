@@ -46,8 +46,38 @@ func (c *Client) FetchCategories() ([]Category, error) {
 	return raw.Categories, nil
 }
 
+func (c *Client) FetchDefaultCategories() ([]Category, error) {
+	body, err := c.get("category", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Categories []Category
+		Requested  int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Categories, nil
+}
+
 func (c *Client) FetchGenres() ([]Genre, error) {
 	body, err := c.get("home/genre", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Genres    []Genre
+		Requested int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Genres, nil
+}
+
+func (c *Client) FetchDefaultGenres() ([]Genre, error) {
+	body, err := c.get("genre", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -74,4 +104,34 @@ func (c *Client) FetchAccounts() ([]Account, error) {
 	json.Unmarshal(body, &raw)
 
 	return raw.Accounts, nil
+}
+
+func (c *Client) FetchDefaultAccounts() ([]Account, error) {
+	body, err := c.get("account", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Accounts  []Account
+		Requested int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Accounts, nil
+}
+
+func (c *Client) FetchCurrencies() ([]Currency, error) {
+	body, err := c.get("currency", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Currencies  []Currency
+		Requested int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Currencies, nil
 }
