@@ -9,7 +9,7 @@ func (c *Client) FetchMe() (Me, error) {
 	}
 
 	var raw struct {
-		Me Me
+		Me        Me
 		Requested string
 	}
 	json.Unmarshal(body, &raw)
@@ -29,4 +29,19 @@ func (c *Client) FetchMoney(params map[string]string) ([]Money, error) {
 	json.Unmarshal(body, &raw)
 
 	return raw.Money, nil
+}
+
+func (c *Client) FetchCategories() ([]Category, error) {
+	body, err := c.get("home/category", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var raw struct {
+		Categories []Category
+		Requested  int
+	}
+	json.Unmarshal(body, &raw)
+
+	return raw.Categories, nil
 }

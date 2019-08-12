@@ -34,3 +34,13 @@ type Money struct {
 	Created       string
 	CurrencyCode  string
 }
+
+type Category struct {
+	ID               int
+	Name             string
+	Mode             string
+	Sort             int
+	ParentCategoryId int
+	Active           int
+	Modified         string
+}
