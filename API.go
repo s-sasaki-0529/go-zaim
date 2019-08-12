@@ -2,14 +2,16 @@ package gozaim
 
 import "encoding/json"
 
-func (c *Client) FetchMoney(params map[string]string) (*MoneySlice, error) {
+func (c *Client) FetchMoney(params map[string]string) ([]Money, error) {
 	body, err := c.get("home/money", params)
 	if err != nil {
 		return nil, err
 	}
 
-	var moneySlice MoneySlice
-	json.Unmarshal(body, &moneySlice)
+	var raw struct {
+		Money []Money
+	}
+	json.Unmarshal(body, &raw)
 
-	return &moneySlice, nil
+	return raw.Money, nil
 }

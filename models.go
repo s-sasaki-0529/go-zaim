@@ -1,9 +1,5 @@
 package gozaim
 
-type MoneySlice struct {
-	Money []Money
-}
-
 type Money struct {
 	ID            int
 	Mode          string
