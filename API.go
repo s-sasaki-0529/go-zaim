@@ -138,3 +138,19 @@ func (c *Client) FetchCurrencies() ([]Currency, error) {
 
 	return raw.Currencies, nil
 }
+
+func (c *Client) CreatePayment(params url.Values) (bool, error) {
+	_, err := c.post("home/money/payment", params)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (c *Client) CreateIncome(params url.Values) (bool, error) {
+	_, err := c.post("home/money/income", params)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
