@@ -3,6 +3,7 @@ package gozaim
 import (
 	"encoding/json"
 	"net/url"
+	"strconv"
 )
 
 func (c *Client) FetchMe() (Me, error) {
@@ -155,32 +156,32 @@ func (c *Client) CreateIncome(params url.Values) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) UpdatePayment(id string, params url.Values) (bool, error) {
-	_, err := c.put("home/money/payment/"+id, params)
+func (c *Client) UpdatePayment(id int, params url.Values) (bool, error) {
+	_, err := c.put("home/money/payment/"+strconv.Itoa(id), params)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (c *Client) UpdateIncome(id string, params url.Values) (bool, error) {
-	_, err := c.put("home/money/income/"+id, params)
+func (c *Client) UpdateIncome(id int, params url.Values) (bool, error) {
+	_, err := c.put("home/money/income/"+strconv.Itoa(id), params)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (c *Client) DeletePayment(id string) (bool, error) {
-	_, err := c.put("home/money/payment/"+id, nil)
+func (c *Client) DeletePayment(id int) (bool, error) {
+	_, err := c.put("home/money/payment/"+strconv.Itoa(id), nil)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (c *Client) DeleteIncome(id string) (bool, error) {
-	_, err := c.put("home/money/income/"+id, nil)
+func (c *Client) DeleteIncome(id int) (bool, error) {
+	_, err := c.put("home/money/income/"+strconv.Itoa(id), nil)
 	if err != nil {
 		return false, err
 	}
