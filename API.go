@@ -21,14 +21,14 @@ func (c *Client) FetchMe() (Me, error) {
 	return raw.Me, nil
 }
 
-func (c *Client) FetchMoney(params url.Values) ([]Money, error) {
+func (c *Client) FetchMoney(params url.Values) (MoneySlice, error) {
 	body, err := c.get("home/money", params)
 	if err != nil {
 		return nil, err
 	}
 
 	var raw struct {
-		Money []Money
+		Money MoneySlice
 	}
 	json.Unmarshal(body, &raw)
 

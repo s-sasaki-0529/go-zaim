@@ -2,6 +2,8 @@ package gozaim
 
 import "net/url"
 
+type MoneySlice []Money
+
 type Money struct {
 	ID            int
 	Mode          string
@@ -35,4 +37,28 @@ func (m *Money) Delete(client *Client) (bool, error) {
 	} else {
 		return client.DeletePayment(m.ID)
 	}
+}
+
+func (ms MoneySlice) UpdateAll(client *Client, params url.Values) ([]bool, []error) {
+	var results []bool
+	var errors []error
+
+	for _, m := range ms {
+		r, e := m.Update(client, params)
+		results = append(results, r)
+		errors = append(errors, e)
+	}
+	return results, errors
+}
+
+func (ms MoneySlice) DeleteAll(client *Client) ([]bool, []error) {
+	var results []bool
+	var errors []error
+
+	for _, m := range ms {
+		r, e := m.Delete(client)
+		results = append(results, r)
+		errors = append(errors, e)
+	}
+	return results, errors
 }
