@@ -3,48 +3,52 @@ package gozaim
 import (
 	"bytes"
 	"errors"
-	"github.com/dghubble/oauth1"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+
+	"github.com/dghubble/oauth1"
 )
 
-const END_POINT = "https://api.zaim.net/v2/"
+// EndPoint APIエンドポイントのURL
+const EndPoint = "https://api.zaim.net/v2/"
 
+// Client OAuthクライアント
 type Client struct {
-	HttpClient *http.Client
+	HTTPClient *http.Client
 }
 
+// NewClient OAuthクライアントインスタンスを生成
 func NewClient(consumerKey, consumerSecret, token, tokenSecret string) *Client {
 	oauthConfig := oauth1.NewConfig(consumerKey, consumerSecret)
 	oauthToken := oauth1.NewToken(token, tokenSecret)
 	httpClient := oauthConfig.Client(oauth1.NoContext, oauthToken)
 
-	return &Client{HttpClient: httpClient}
+	return &Client{HTTPClient: httpClient}
 }
 
 func (c *Client) get(path string, params url.Values) ([]byte, error) {
-	return c.executeHttpRequestAndParseBody("GET", path, params)
+	return c.executeHTTPRequestAndParseBody("GET", path, params)
 }
 
 func (c *Client) post(path string, params url.Values) ([]byte, error) {
-	return c.executeHttpRequestAndParseBody("POST", path, params)
+	return c.executeHTTPRequestAndParseBody("POST", path, params)
 }
 
 func (c *Client) put(path string, params url.Values) ([]byte, error) {
-	return c.executeHttpRequestAndParseBody("PUT", path, params)
+	return c.executeHTTPRequestAndParseBody("PUT", path, params)
 }
 
 func (c *Client) delete(path string, params url.Values) ([]byte, error) {
-	return c.executeHttpRequestAndParseBody("delete", path, params)
+	return c.executeHTTPRequestAndParseBody("delete", path, params)
 }
 
-func (c *Client) executeHttpRequestAndParseBody(method, path string, params url.Values) ([]byte, error) {
-	response, err := c.executeHttpRequest(method, path, params)
+func (c *Client) executeHTTPRequestAndParseBody(method, path string, params url.Values) ([]byte, error) {
+	response, err := c.executeHTTPRequest(method, path, params)
 	if err != nil {
 		return nil, err
 	}
-	body, err := parseHttpResponseBody(response)
+	body, err := parseHTTPResponseBody(response)
 	if err != nil {
 		return nil, err
 	}
@@ -54,20 +58,20 @@ func (c *Client) executeHttpRequestAndParseBody(method, path string, params url.
 	return body, nil
 }
 
-func (c *Client) executeHttpRequest(method, path string, params url.Values) (*http.Response, error) {
+func (c *Client) executeHTTPRequest(method, path string, params url.Values) (*http.Response, error) {
 	var request *http.Request
 	var err error
 
 	if method == "GET" {
 		request, err = http.NewRequest(
 			method,
-			END_POINT+path+"?"+params.Encode(),
+			EndPoint+path+"?"+params.Encode(),
 			nil,
 		)
 	} else {
 		request, err = http.NewRequest(
 			method,
-			END_POINT+path,
+			EndPoint+path,
 			bytes.NewBufferString(params.Encode()),
 		)
 		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -75,15 +79,14 @@ func (c *Client) executeHttpRequest(method, path string, params url.Values) (*ht
 	if err != nil {
 		return nil, err
 	}
-	return c.HttpClient.Do(request)
+	return c.HTTPClient.Do(request)
 }
 
-func parseHttpResponseBody(resp *http.Response) ([]byte, error) {
+func parseHTTPResponseBody(resp *http.Response) ([]byte, error) {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	} else {
-		return body, nil
 	}
+	return body, nil
 }

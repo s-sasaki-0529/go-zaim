@@ -1,5 +1,6 @@
 package gozaim
 
+// Me ユーザ情報
 type Me struct {
 	ID              int
 	Login           string
@@ -11,7 +12,7 @@ type Me struct {
 	Week            int
 	Month           int
 	CurrencyCode    string
-	ProfileImageUrl string
-	CoverImageUrl   string
+	ProfileImageURL string
+	CoverImageURL   string
 	ProfileModified string
 }
