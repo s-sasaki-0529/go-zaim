@@ -7,22 +7,22 @@ type MoneySlice []Money
 
 // Money 支払い/収入情報
 type Money struct {
-	ID            int
-	Mode          string
-	UserID        int
-	Date          string
-	CategoryID    int
-	GenreID       int
-	ToAccountID   int
-	FromAccountID int
-	Amount        int
-	Comment       string
-	Active        int
-	Name          string
-	ReceiptID     int
-	Place         string
-	Created       string
-	CurrencyCode  string
+	ID            int    `json:"id"`
+	Mode          string `json:"mode"`
+	UserID        int    `json:"user_id"`
+	Date          string `json:"date"`
+	CategoryID    int    `json:"category_id"`
+	GenreID       int    `json:"genre_id"`
+	ToAccountID   int    `json:"to_account_id"`
+	FromAccountID int    `json:"from_account_id"`
+	Amount        int    `json:"amount"`
+	Comment       string `json:"comment"`
+	Active        int    `json:"active"`
+	Name          string `json:"name"`
+	ReceiptID     int    `json:"receipt_id"`
+	Place         string `json:"place"`
+	Created       string `json:"created"`
+	CurrencyCode  string `json:"currency_code"`
 }
 
 // Update 支払い/収入情報を更新
